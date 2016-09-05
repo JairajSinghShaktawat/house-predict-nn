@@ -1,4 +1,8 @@
 import json
+THROW_AWAY = ['yearAge', 'filteredAddress', 
+		'countyName', 'stateOrProvinceName', 'photoURL',
+		 'MLSNumber', 'listingStatus', 'publicRemarks', 
+		 'siteMapDetailUrlPath', 'yearBuilt']
 
 #data extraction code
 #this file won't run because "sj.json" wasn't pushed.
@@ -6,15 +10,12 @@ import json
 #weren't needed for this project. This code just parses that stuff out 
 with open('sj.json') as data_file:
 	data = json.load(data_file)
+
 li = data['propertySearchResults']
-for item in li:
-	keys = item.keys()
-	for k in keys:
-		if k in ['yearAge', 'filteredAddress', 
-		'countyName', 'stateOrProvinceName', 'photoURL',
-		 'MLSNumber', 'listingStatus', 'publicRemarks', 
-		 'siteMapDetailUrlPath', 'yearBuilt']:
-		 	item.pop(k)
+
+for x in xrange(0, len(li)):
+	item = li[x]
+	li[x] = {k: v for k,v in item.iteritems() if k not in THROW_AWAY}
 
 
 
