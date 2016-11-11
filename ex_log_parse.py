@@ -8,4 +8,4 @@ for line in FILE:
          printList.append(line)
 
 for item in printList:
-    print item    # or write it to another file... or whatever
+    
