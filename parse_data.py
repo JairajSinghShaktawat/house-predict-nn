@@ -1,7 +1,9 @@
 import json
+import argparse
 
 
 class DataParser(object):
+
     def __init__(self, json_file, THROW_AWAY=[]):
         with open(json_file, "r") as data_file:
             data = json.load(data_file)
@@ -18,15 +20,22 @@ class DataParser(object):
     def dict_to_matrix(self, list):
         li = []
         for dict_data in list:
-            features = [v for k, v in dict_data.iteritems() if k != "listSalePrice"]
+            features = [v for k, v in dict_data.iteritems() if
+                        k != "listSalePrice"]
             features.append(dict_data["listSalePrice"])
             li.append(features)
         return li
 
 
 if __name__ == '__main__':
-    THROW_AWAY = ['yearAge', 'filteredAddress', 'countyName', 'stateOrProvinceName', 'photoURL', 'MLSNumber', 'listingStatus', 'publicRemarks', 'siteMapDetailUrlPath', 'yearBuilt']
-    parser = DataParser("sj.json", THROW_AWAY)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("f", type=str)
+    args = parser.parse_args()
+    THROW_AWAY = ['yearAge', 'filteredAddress', 'countyName',
+                  'stateOrProvinceName', 'photoURL', 'MLSNumber',
+                  'listingStatus', 'publicRemarks', 'siteMapDetailUrlPath',
+                  'yearBuilt']
+    data_parser = DataParser(args.f, THROW_AWAY)
     # print parser.filtered_data[0]
-    features_list = parser.dict_to_matrix(parser.get_data())
+    features_list = data_parser.dict_to_matrix(data_parser.get_data())
     print len(features_list)
