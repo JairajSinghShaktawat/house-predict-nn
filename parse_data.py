@@ -39,6 +39,16 @@ class DataParser(object):
 #     filtered_data = map(remove_throw_out, filtered_data)
 #     return filtered_data
 
+def get_data(json_file, throw_out=set()):
+    data = json.load(open(json_file, "r"))
+    filtered_data = data["propertySearchResults"]
+    print type(filtered_data[0])
+    # exit()
+    filtered_data = map(lambda k, v: k, v if k not in throw_out else None,
+                        filtered_data)
+    return filtered_data
+
+
 
 
 
@@ -51,6 +61,9 @@ if __name__ == '__main__':
                   'listingStatus', 'publicRemarks', 'siteMapDetailUrlPath',
                   'yearBuilt')
     THROW_AWAY = set(THROW_AWAY)
+    dataset = get_data(args.f, THROW_AWAY)
+    print dataset
+    exit()
     data_parser = DataParser(args.f, THROW_AWAY)
     # print parser.filtered_data[0]
     features_list = data_parser.dict_to_matrix(data_parser.get_data())
