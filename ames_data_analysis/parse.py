@@ -1,4 +1,5 @@
-
+from sklearn import preprocessing
+import numpy as np
 
 
 
@@ -11,5 +12,11 @@ if __name__ == '__main__':
     with open(fpath_train) as file:
         training_data = file.readlines()
     var_names = training_data[0]
-    training_data = training_data[1:]
-    print training_data[0]
+    var_names = var_names.split(",")
+    print var_names
+    dataset = []
+    for item in training_data:
+        dataset.append(item.split(","))
+    training_data = dataset
+
+    enc = preprocessing.OneHotEncoder()
