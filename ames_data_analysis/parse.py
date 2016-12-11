@@ -56,10 +56,27 @@ def split_labels_from_dataset(dataset, label_idx=-1):
         return dataset, labels
 
 
+def get_categorical_indices(dataset):
+    """
+    given a dataset, finds all indices j such that dataset[i][j] is a
+    not a continuous integer variable, for any i. Use for encoding categorical
+    variables.
+    params: dataset - the dataset with possible categorical variables
+    return: list with indices where a non-int variable occurs.
+    """
+    # get all unique j such that dataset[i][j] is not an int, for any j
+    indices = {j for j in range(dataset.shape[1])
+               for i in range(dataset.shape[0]) if not isint(dataset[i][j])}
+    return list(indices)
+
+
 if __name__ == '__main__':
+    # paths to datasets
     fpath_descript = "../data/data_description.csv"
     fpath_train = "../data/house_train.csv"
     fpath_test = "../data/house_test.csv"
+
+    # extract training data, convert to numpy array, and separate labels/names
     training_data = open(fpath_train).readlines()
     var_names = training_data[0].split(",")
     training_data = training_data[1:]
@@ -68,14 +85,13 @@ if __name__ == '__main__':
     # extract out answers/labels from the array
     training_data, prices = split_labels_from_dataset(training_data,
                                                       label_idx=-1)
-    print prices.shape
-    print training_data.shape
-    encoding = generate_encoding(list(set(training_data[:, 5])))
-    encode_these = []
-    for i in range(len(training_data[0])):
-        if(not isint(training_data[0][i])):
-            encode_these.append(i)
 
-
-    transformed_data = encode_features(training_data, indices_to_encode=encode_these)
-    print transformed_data[0]
+    # get a list of indices to encode, based on which ones aren't integers
+    # find which instance has the most non-categorical variables
+    enc = get_categorical_indices(training_data)
+    transformed_data = encode_features(training_data,
+                                       indices_to_encode=enc)
+    nums = np.zeros(transformed_data.shape, dtype=int)
+    for i in range(transformed_data.shape[0]):
+        nums[i] = np.array(map(float, transformed_data[i]))
+    print nums.shape
