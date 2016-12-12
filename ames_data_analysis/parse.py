@@ -1,4 +1,3 @@
-from sklearn import preprocessing
 import numpy as np
 np.set_printoptions(threshold='nan')  # for array printing purposes
 
@@ -70,14 +69,9 @@ def get_categorical_indices(dataset):
     return list(indices)
 
 
-if __name__ == '__main__':
-    # paths to datasets
-    fpath_descript = "../data/data_description.csv"
-    fpath_train = "../data/house_train.csv"
-    fpath_test = "../data/house_test.csv"
-
-    # extract training data, convert to numpy array, and separate labels/names
-    training_data = open(fpath_train).readlines()
+def get_data(path_to_file=None):
+    #open data and separate out variable names, which is the first row
+    training_data = open(path_to_file).readlines()
     var_names = training_data[0].split(",")
     training_data = training_data[1:]
     dataset = [item.split(",") for item in training_data]
@@ -87,11 +81,20 @@ if __name__ == '__main__':
                                                       label_idx=-1)
 
     # get a list of indices to encode, based on which ones aren't integers
-    # find which instance has the most non-categorical variables
+    # call an function that encodes these categorical variables
     enc = get_categorical_indices(training_data)
     transformed_data = encode_features(training_data,
                                        indices_to_encode=enc)
+    # convert string represetation of int -> int
     nums = np.zeros(transformed_data.shape, dtype=int)
     for i in range(transformed_data.shape[0]):
         nums[i] = np.array(map(float, transformed_data[i]))
-    print nums.shape
+    transformed_data = nums
+    return var_names, transformed_data, prices
+
+if __name__ == '__main__':
+    # paths to datasets
+    fpath_descript = "../data/data_description.csv"
+    fpath_train = "../data/house_train.csv"
+    fpath_test = "../data/house_test.csv"
+    v_names, t_data, p = get_data(fpath_train)
