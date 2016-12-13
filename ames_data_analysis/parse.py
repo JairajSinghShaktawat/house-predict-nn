@@ -90,6 +90,7 @@ def get_data(path_to_file=None):
     for i in range(transformed_data.shape[0]):
         nums[i] = np.array(map(float, transformed_data[i]))
     transformed_data = nums
+    prices = map(int, prices)
     return var_names, transformed_data, prices
 
 if __name__ == '__main__':
@@ -97,4 +98,5 @@ if __name__ == '__main__':
     fpath_descript = "../data/data_description.csv"
     fpath_train = "../data/house_train.csv"
     fpath_test = "../data/house_test.csv"
-    v_names, t_data, p = get_data(fpath_train)
+    var_names, training_data, price_labels = get_data(fpath_train)
+    print price_labels[0]
