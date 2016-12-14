@@ -70,7 +70,9 @@ def get_categorical_indices(dataset):
 
 
 def get_data(path_to_file=None):
-    #open data and separate out variable names, which is the first row
+    # open data and separate out variable names, which is the first row
+    # TODO - this reads the entire file into memory, which may not be feasible
+    # for really large files.
     training_data = open(path_to_file).readlines()
     var_names = training_data[0].split(",")
     training_data = training_data[1:]
