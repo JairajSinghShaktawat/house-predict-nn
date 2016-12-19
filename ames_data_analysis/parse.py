@@ -70,9 +70,7 @@ def get_categorical_indices(dataset):
 
 
 def get_data(path_to_file=None):
-    # open data and separate out variable names, which is the first row
-    # TODO - this reads the entire file into memory, which may not be feasible
-    # for really large files.
+    #open data and separate out variable names, which is the first row
     training_data = open(path_to_file).readlines()
     var_names = training_data[0].split(",")
     training_data = training_data[1:]
@@ -95,10 +93,13 @@ def get_data(path_to_file=None):
     prices = map(int, prices)
     return var_names, transformed_data, prices
 
-if __name__ == '__main__':
+def start():
     # paths to datasets
     fpath_descript = "../data/data_description.csv"
     fpath_train = "../data/house_train.csv"
     fpath_test = "../data/house_test.csv"
-    var_names, training_data, price_labels = get_data(fpath_train)
-    print price_labels[0]
+    v_names, t_data, p = get_data(fpath_train)
+    return v_names, t_data, p
+
+if __name__ == '__main__':
+    start()
