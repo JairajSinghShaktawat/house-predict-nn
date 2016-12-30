@@ -10,6 +10,7 @@ def generate_encoding(features):
     rtype: dict of labels associated with their numerical value
     """
     features = list(set(features))  # only unique labels
+    # assign each categorical feature instance a numerical value
     label_dict = {features[i]: i for i in range(0, len(features))}
     return label_dict
 
@@ -22,8 +23,11 @@ def encode_features(dataset, indices_to_encode=[]):
     """
     ds = np.array(dataset)
     for index in indices_to_encode:
+        # each index represents a set of categorical values that need encoding.
+        # generate the mapping
         feature_dict = generate_encoding(dataset[:, index])
         for i in range(0, dataset.shape[0]):
+            # assign the key (numerical feature) from the mapping, overriding the categorical instance
             ds[i][index] = feature_dict[dataset[i][index]]
     return ds
 
@@ -93,6 +97,20 @@ def get_data(path_to_file=None):
     prices = map(int, prices)
     return var_names, transformed_data, prices
 
+def normalize_data(training_data):
+    """Takes in a numpy matrix of training data and normalizes it (all values between 0 and 1)
+    Params: training_data - numpy array of training data
+    Output: normalized data
+    """
+    maxes, mins = np.amax(training_data, axis=0), np.amin(training_data, axis=0)
+    norm = np.zeros(training_data.shape, dtype=float)
+    for i in range(training_data.shape[1]):
+        norm[:,i] = (training_data[:, i] - mins[i])/float(maxes[i]-mins[i])
+    return norm
+
+
+
+
 def start():
     # paths to datasets
     fpath_descript = "../data/data_description.csv"
@@ -100,7 +118,8 @@ def start():
     fpath_test = "../data/house_test.csv"
     v_names, t_data, p = get_data(fpath_train)
     t_data = t_data[:,1:]
-    print t_data[:,0]
+    t_data = normalize_data(t_data)
+    print t_data[:,33]
     return v_names, t_data, p
 
 if __name__ == '__main__':
