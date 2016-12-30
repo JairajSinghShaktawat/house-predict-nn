@@ -99,6 +99,8 @@ def start():
     fpath_train = "../data/house_train.csv"
     fpath_test = "../data/house_test.csv"
     v_names, t_data, p = get_data(fpath_train)
+    t_data = t_data[:,1:]
+    print t_data[:,0]
     return v_names, t_data, p
 
 if __name__ == '__main__':
