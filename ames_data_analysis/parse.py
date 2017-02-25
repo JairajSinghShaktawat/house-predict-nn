@@ -113,9 +113,9 @@ def normalize_data(training_data):
 
 def start():
     # paths to datasets
-    fpath_descript = "../data/data_description.csv"
-    fpath_train = "../data/house_train.csv"
-    fpath_test = "../data/house_test.csv"
+    fpath_descript = "./data/data_description.csv"
+    fpath_train = "./data/house_train.csv"
+    fpath_test = "./data/house_test.csv"
     v_names, t_data, p = get_data(fpath_train)
     t_data = t_data[:,1:]
     t_data = normalize_data(t_data)
