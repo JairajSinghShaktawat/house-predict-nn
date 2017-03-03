@@ -111,7 +111,7 @@ with tf.Session() as sess:
             print ("Epoch:", '%04d' % (epoch+1), "cost=", \
                 "{:.9f}".format(avg_cost))
             print ("[*]----------------------------")
-            for i in xrange(3):
+            for i in xrange(len(batch_y)):
                 print ("label value:", label_value[i], \
                     "estimated value:", estimate[i])
             print ("[*]============================")
@@ -120,6 +120,7 @@ with tf.Session() as sess:
 
     # Test model
     correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
+    print (correct_prediction.eval({x: X_test, y: Y_test}))
     # Calculate accuracy
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-    print ("Accuracy:", accuracy.eval({x: X_test, y: Y_test}))
+    # accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+    # print ("Accuracy:", accuracy.eval({x: X_test, y: Y_test}))
